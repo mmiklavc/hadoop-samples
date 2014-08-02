@@ -1,0 +1,10 @@
+#!/bin/bash
+
+mysql -D hadoop_samples -u root -e "\
+DROP TABLE IF EXISTS SQOOP_IMPORT; \
+CREATE TABLE SQOOP_IMPORT ( \
+    ID INT NOT NULL AUTO_INCREMENT, \
+    COL1 VARCHAR(10) NOT NULL, \
+    COL2 VARCHAR(10) NOT NULL, \
+    COL3 VARCHAR(10) NOT NULL, \
+    PRIMARY KEY (ID) );"
