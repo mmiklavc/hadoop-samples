@@ -1,0 +1,22 @@
+<configuration>
+    <property>
+        <name>nameNode</name>
+        <value>hdfs://nn.clevelandflash.com:8020</value>
+    </property>
+    <property>
+        <name>jobTracker</name>
+        <value>slave1.clevelandflash.com:8050</value>
+    </property>
+    <property>
+        <name>queueName</name>
+        <value>default</value>
+    </property>
+    <property>
+        <name>oozie.coord.application.path</name>
+        <value>${nameNode}/apps/oozie/coordinator/coord-test/coordinator.xml</value>
+    </property>
+    <property>
+        <name>oozie.use.system.libpath</name>
+        <value>true</value>
+    </property>
+</configuration>

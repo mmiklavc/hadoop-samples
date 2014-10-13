@@ -1,0 +1,25 @@
+<workflow-app name='pig-wf' xmlns="uri:oozie:workflow:0.3">
+    <start to='pig-node'/>
+    <action name='pig-node'>
+        <pig>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <script>filter.pig</script>
+            <param>CURRENT_DATE=${wf:conf('CURRENT_DATE')}</param>
+            <param>INPUT1=${wf:conf('input1')}</param>
+            <param>OUTPUT1=${wf:conf('output1')}</param>
+        </pig>
+        <ok to="end"/>
+        <error to="fail"/>
+    </action>
+    <kill name="fail">
+        <message>Pig failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>

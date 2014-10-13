@@ -1,0 +1,40 @@
+<coordinator-app name="MY_APP" frequency="${coord:days(1)}" start="2014-10-13T00:00Z" end="2014-10-14T00:00Z" timezone="UTC" xmlns="uri:oozie:coordinator:0.3">
+    <datasets>
+        <dataset name="input1" frequency="${coord:days(1)}" initial-instance="2014-10-13T00:00Z" timezone="UTC">
+            <uri-template>${nameNode}/user/${coord:user()}/coord-test-in/${YEAR}${MONTH}${DAY}</uri-template>
+        </dataset>
+        <dataset name="output1" frequency="${coord:days(1)}" initial-instance="2014-10-13T00:00Z" timezone="UTC">
+            <uri-template>${nameNode}/user/${coord:user()}/coord-test-out/${YEAR}${MONTH}${DAY}</uri-template>
+        </dataset>
+    </datasets>
+    <input-events>
+        <data-in name="coordInput1" dataset="input1">
+            <start-instance>${now(0,0)}</start-instance>
+            <end-instance>${now(0,0)}</end-instance>
+        </data-in>
+    </input-events>
+    <output-events>
+        <data-out name="coordOutput1" dataset="output1">
+            <instance>${now(0,0)}</instance>
+        </data-out>
+    </output-events>
+    <action>
+        <workflow>
+            <app-path>${nameNode}/apps/oozie/workflow/coord-test</app-path>
+            <configuration>
+                <property>
+                    <name>CURRENT_DATE</name>
+                    <value>${coord:formatTime(coord:nominalTime(),'yyyyMMdd')}</value>
+                </property>
+                <property>
+                    <name>input1</name>
+                    <value>${coord:dataIn('coordInput1')}</value>
+                </property>
+                <property>
+                    <name>output1</name>
+                    <value>${coord:dataOut('coordOutput1')}</value>
+                </property>
+            </configuration>
+        </workflow>
+    </action>     
+</coordinator-app>
