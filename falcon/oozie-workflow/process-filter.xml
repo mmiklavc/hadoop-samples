@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<process name="process-filter-v1-5" xmlns="uri:falcon:process:0.1">
+<process name="process-filter-v1-6" xmlns="uri:falcon:process:0.1">
     <clusters>
         <cluster name="cluster-one">
             <validity start="2014-10-18T00:00Z" end="2014-10-18T20:00Z"/>

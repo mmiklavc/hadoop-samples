@@ -24,15 +24,7 @@ hive -e "USE ${IN_DATABASE_NAME}; ALTER TABLE ${IN_TABLE_NAME} ADD PARTITION (pr
 # SETUP OOZIE WORKFLOW APP
 hdfs dfs -mkdir -p $WORKFLOW_APP_DIR
 hdfs dfs -rm -r ${WORKFLOW_APP_DIR}/*
-hdfs dfs -put workflow.xml $WORKFLOW_APP_DIR
-hdfs dfs -put filter.pig $WORKFLOW_APP_DIR
-hdfs dfs -put conf $WORKFLOW_APP_DIR
-
-# SETUP FALCON
-#falcon entity -type cluster -file cluster.xml -submit
-#falcon entity -type feed -file feed-in.xml -submit
-#falcon entity -type feed -file feed-out.xml -submit
-#falcon entity -type process -file process-filter.xml -submit
+hdfs dfs -put app/* $WORKFLOW_APP_DIR
 
 popd > /dev/null
 
