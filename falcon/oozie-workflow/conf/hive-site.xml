@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<configuration>
+    <property><name>hcat.metastore.uri</name><value>thrift://slave1.clevelandflash.com:9083</value><source>programatically</source></property>
+    <property><name>hcatNode</name><value>hcat://slave1.clevelandflash.com:9083</value><source>programatically</source></property>
+    <property><name>hive.metastore.uris</name><value>thrift://slave1.clevelandflash.com:9083</value><source>programatically</source></property>
+    <property><name>hive.metastore.execute.setugi</name><value>true</value><source>programatically</source></property>
+</configuration>

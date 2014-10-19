@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<process name="process-filter-v1-5" xmlns="uri:falcon:process:0.1">
+    <clusters>
+        <cluster name="cluster-one">
+            <validity start="2014-10-18T00:00Z" end="2014-10-18T20:00Z"/>
+        </cluster>
+    </clusters>
+ 
+    <parallel>1</parallel>
+    <order>FIFO</order>
+    <timeout>hours(8)</timeout>
+    <frequency>days(1)</frequency>
+    <timezone>UTC</timezone>
+ 
+    <inputs>
+        <input name="INPUT1" feed="inbound-falcon-oozie" start="now(0,0)" end="now(0,0)"/>
+    </inputs>
+ 
+    <outputs>
+        <output name="OUTPUT1" feed="outbound-falcon-oozie" instance="now(0,0)"/>
+    </outputs>
+ 
+    <workflow engine="oozie" path="/apps/falcon/oozie/workflow-test" />
+ 
+    <retry policy="periodic" delay="minutes(20)" attempts="3"/>
+ 
+</process>

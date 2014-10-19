@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<feed description="" name="outbound-falcon-oozie" xmlns="uri:falcon:feed:0.1">
+    <frequency>days(1)</frequency>
+
+    <clusters>
+        <cluster name="cluster-one" type="source">
+            <validity start="2014-10-18T00:00Z" end="2014-10-18T20:00Z" />
+            <retention limit="months(9999)" action="delete" />
+        </cluster>
+    </clusters>
+
+    <table uri="catalog:mmiklavcic:filtereddata#proc_date=${YEAR}${MONTH}${DAY}" />
+
+    <ACL owner="mmiklavcic" group="users" permission="0755" />
+    <schema location="hcat" provider="hcat"/>
+</feed>

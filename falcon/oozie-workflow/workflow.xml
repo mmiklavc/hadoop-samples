@@ -1,0 +1,42 @@
+<workflow-app name='pig-wf' xmlns="uri:oozie:workflow:0.3">
+    <start to='pig-node'/>
+    <action name='pig-node'>
+        <pig>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+                <property>
+                    <name>oozie.launcher.mapred.job.priority</name>
+                    <value>${jobPriority}</value>
+                </property>
+                <property>
+                    <name>oozie.use.system.libpath</name>
+                    <value>true</value>
+                </property>
+                <property>
+                    <name>oozie.action.sharelib.for.pig</name>
+                    <value>pig,hcatalog</value>
+                </property>
+            </configuration>
+            <script>filter.pig</script>
+            <param>CURRENT_DATE=${wf:conf('nominalTime')}</param>
+            <param>falcon_INPUT1_database=${wf:conf('falcon_INPUT1_database')}</param>
+            <param>falcon_INPUT1_table=${wf:conf('falcon_INPUT1_table')}</param>
+            <param>falcon_INPUT1_filter=${wf:conf('falcon_INPUT1_partition_filter_pig')}</param>
+            <param>falcon_OUTPUT1_database=${wf:conf('falcon_OUTPUT1_database')}</param>
+            <param>falcon_OUTPUT1_table=${wf:conf('falcon_OUTPUT1_table')}</param>
+            <param>falcon_OUTPUT1_dataout_partitions=${wf:conf('falcon_OUTPUT1_dataout_partitions')}</param>
+            <file>${wf:appPath()}/conf/hive-site.xml</file>
+        </pig>
+        <ok to="end"/>
+        <error to="fail"/>
+    </action>
+    <kill name="fail">
+        <message>Pig failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>

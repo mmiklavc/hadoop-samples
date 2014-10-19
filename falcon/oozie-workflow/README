@@ -1,0 +1,26 @@
+Falcon Demo
+
+Falcon process -> Oozie workflow -> Pig script
+
+SETUP
+
+Versions based on an HDP 2.1.5.0 installation.
+
+Falcon interfaces
+-----------------
+INTERFACE   AMBARI SETTING LOCATION             DEFAULT PORTS
+readonly    HDFS->dfs.namenode.http-address     50070
+write       HDFS->fs.defaultFS                  8020
+execute     YARN->yarn.resourcemanager.address  8050
+workflow    OOZIE->oozie.base.url               11000
+registry    HIVE->hive.metastore.uris           9083
+messaging   FALCON->*.broker.url                61616
+
+Disable the timeline service
+- uncheck YARN->yarn.timeline-service.enabled
+
+Setup external ActiveMQ
+- download latest ActiveMQ here - http://activemq.apache.org/activemq-5100-release.html
+- modify the hosts/ports for Falcon through Ambari
+- set Falcon embedded mq option to 'false'
+
