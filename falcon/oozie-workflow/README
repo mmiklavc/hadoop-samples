@@ -24,3 +24,4 @@ Setup external ActiveMQ
 - modify the hosts/ports for Falcon through Ambari
 - set Falcon embedded mq option to 'false'
 
+Note: You'll want to modify app/conf/hive-site.xml to reference your cluster's thrift uri. You should also modify cluster.xml with your cluster's values.
