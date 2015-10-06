@@ -1,0 +1,1 @@
+insert into intable2 partition(last_update_date) select * from intable1;

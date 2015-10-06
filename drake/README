@@ -1,0 +1,1 @@
+Drake does not do scheduling. The email ingest workflow expects datestamp-partitioned directories for recurring executions.

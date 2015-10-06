@@ -1,0 +1,6 @@
+; do something basic
+out.csv <- in.csv [shell]
+    cat $INPUT > $OUTPUT
+
+count.txt <- out.csv
+    wc $INPUT > $OUTPUT
