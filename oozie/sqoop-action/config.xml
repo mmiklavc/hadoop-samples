@@ -1,0 +1,26 @@
+<configuration>
+    <property>
+        <name>nameNode</name>
+        <value>hdfs://sandbox.hortonworks.com:8020</value>
+    </property>
+    <property>
+        <name>jobTracker</name>
+        <value>sandbox.hortonworks.com:8050</value>
+    </property>
+    <property>
+        <name>queueName</name>
+        <value>default</value>
+    </property>
+    <property>
+        <name>oozie.wf.application.path</name>
+        <value>${nameNode}/apps/oozie/workflow/sqoop-action/workflow.xml</value>
+    </property>
+    <property>
+        <name>oozie.use.system.libpath</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>oozie.action.sharelib.for.sqoop</name>
+        <value>sqoop,hcatalog,hive,hive2</value>
+    </property>
+</configuration>
