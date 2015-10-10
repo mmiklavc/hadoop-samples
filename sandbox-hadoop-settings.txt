@@ -1,0 +1,27 @@
+# wget http://public-repo-1.hortonworks.com/HDP/tools/2.3.0.0/hdp_manual_install_rpm_helper_files-2.3.0.0.2557.tar.gz
+# python hdp-configuration-utils.py -c 4 -m 4 -d 1 -k False
+ Using cores=4 memory=4GB disks=1 hbase=False
+ Profile: cores=4 memory=3072MB reserved=1GB usableMem=3GB disks=1
+ Num Container=3
+ Container Ram=1024MB
+ Used Ram=3GB
+ Unused Ram=1GB
+ ***** mapred-site.xml *****
+ mapreduce.map.memory.mb=1024
+ mapreduce.map.java.opts=-Xmx768m
+ mapreduce.reduce.memory.mb=2048
+ mapreduce.reduce.java.opts=-Xmx1536m
+ mapreduce.task.io.sort.mb=384
+ ***** yarn-site.xml *****
+ yarn.scheduler.minimum-allocation-mb=1024
+ yarn.scheduler.maximum-allocation-mb=3072
+ yarn.nodemanager.resource.memory-mb=3072
+ yarn.app.mapreduce.am.resource.mb=1024
+ yarn.app.mapreduce.am.command-opts=-Xmx768m
+ ***** tez-site.xml *****
+ tez.am.resource.memory.mb=2048
+ tez.am.java.opts=-Xmx1536m
+ ***** hive-site.xml *****
+ hive.tez.container.size=1024
+ hive.tez.java.opts=-Xmx768m
+ hive.auto.convert.join.noconditionaltask.size=134217000
