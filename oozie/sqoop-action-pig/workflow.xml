@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<workflow-app xmlns="uri:oozie:workflow:0.2" name="sqoop-action-pig">
+    <start to="sqoop-node"/>
+
+    <action name="sqoop-node">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <command>import --connect jdbc:mysql://sandbox.hortonworks.com/hadoop_samples --username root --table sqoop_action --target-dir ${stgDir} --hive-drop-import-delims --skip-dist-cache -m 1</command>
+        </sqoop>
+        <ok to="pig-node"/>
+        <error to="fail-sqoop"/>
+    </action>
+
+    <action name="pig-node">
+        <pig>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+                <property>
+                    <name>mapred.compress.map.output</name>
+                    <value>true</value>
+                </property>
+            </configuration>
+            <script>prep.pig</script>
+            <param>INPUT=${stgDir}</param>
+            <param>output_database_name=${prepDBName}</param>
+            <param>output_table_name=${prepTableName}</param>
+            <param>archiveDir=${archiveDir}</param>
+            <param>datestamp=${datestamp}</param>
+            <file>/apps/share/hive-site.xml</file>
+        </pig>
+        <ok to="end"/>
+        <error to="fail-pig"/>
+    </action>
+
+    <kill name="fail-sqoop">
+        <message>Sqoop failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <kill name="fail-pig">
+        <message>Pig failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>

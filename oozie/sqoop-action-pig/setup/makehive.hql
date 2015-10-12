@@ -1,0 +1,12 @@
+DROP TABLE IF EXISTS ${env:PREP_DB}.${env:PREP_TABLE};
+CREATE EXTERNAL TABLE ${env:PREP_DB}.${env:PREP_TABLE} (
+    id int,
+    col1 string
+)
+PARTITIONED BY (datestamp string, col2 string)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '\001'
+    LINES TERMINATED BY '\n'
+    STORED AS TEXTFILE
+LOCATION '${env:PREP_DIR}';
+

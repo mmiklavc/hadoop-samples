@@ -14,9 +14,11 @@ echo "Setup app directories (use user that will execute workflows, e.g. your use
 # su <your username>
 sudo -u hdfs hdfs dfs -rm -r $APP_ROOT
 hdfs dfs -mkdir $APP_ROOT
+hdfs dfs -mkdir -p $ARCHIVE_DIR
 
 echo "Upload application"
 hdfs dfs -put ../workflow.xml $APP_ROOT
+hdfs dfs -put ../prep.pig $APP_ROOT
 hdfs dfs -put /etc/hive/conf/hive-site.xml /apps/share
 
 echo "Setup MySQL"
@@ -26,6 +28,6 @@ echo "Loading data"
 mysql < load.sql
 
 echo "Setup hive table"
-hdfs dfs -rm -r $SQOOP_DIR
+hdfs dfs -rm -r $PREP_DIR
 hive -f makehive.hql
 
