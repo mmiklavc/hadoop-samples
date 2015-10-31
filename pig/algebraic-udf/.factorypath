@@ -1,0 +1,4 @@
+<factorypath>
+    <factorypathentry kind="PLUGIN" id="org.eclipse.jst.ws.annotations.core" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/adrianwalker/multiline-string/0.1.1/multiline-string-0.1.1.jar" enabled="true" runInBatchMode="false"/>
+</factorypath>
