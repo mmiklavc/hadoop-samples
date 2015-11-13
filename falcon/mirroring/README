@@ -1,0 +1,14 @@
+This example assumes a single Sandbox cluster replicated to itself for demo purposes. This also uses the root account.
+
+Either change paths and permissions accordingly, or you need to add root to the "users" group.
+
+$ usermod -a -G users root
+
+Create dirs and upload files
+$ ./setup.sh
+
+Upload cluster definitions
+$ falcon entity -type cluster -file primaryCluster.xml -submit
+$ falcon entity -type cluster -file backupCluster.xml -submit
+
+Use the Falcon UI to create a mirroring job. Source and target should be configured as is shown in "setup.sh"
