@@ -1,0 +1,7 @@
+set hive.execution.engine=mr;
+
+set hive.stats.fetch.column.stats=true;
+set hive.cbo.enable=true;
+set hive.compute.query.using.stats=true;
+
+explain select col1 from decimal_size1;
