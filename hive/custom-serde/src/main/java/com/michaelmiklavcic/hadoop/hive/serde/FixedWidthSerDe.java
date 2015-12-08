@@ -1,5 +1,9 @@
 package com.michaelmiklavcic.hadoop.hive.serde;
 
+import static com.michaelmiklavcic.hadoop.hive.serde.FixedWidthSerDeConstants.FIXED_WIDTH_PADDING_CHAR;
+import static com.michaelmiklavcic.hadoop.hive.serde.FixedWidthSerDeConstants.FIXED_WIDTH_PADDING_TYPE;
+import static com.michaelmiklavcic.hadoop.hive.serde.FixedWidthSerDeConstants.FIXED_WIDTH_RANGES;
+
 import java.io.StringWriter;
 import java.util.*;
 
@@ -13,13 +17,17 @@ import org.apache.hadoop.io.*;
 public class FixedWidthSerDe extends AbstractSerDe {
     private List<String> row;
     private List<String> ranges;
+    private String paddingType;
+    private char paddingChar;
     private String[] outputFields;
     private int numCols;
     private ObjectInspector inspector;
 
     @Override
     public void initialize(final Configuration conf, final Properties props) throws SerDeException {
-        ranges = Arrays.asList(props.getProperty("RANGES").split(","));
+        ranges = Arrays.asList(props.getProperty(FIXED_WIDTH_RANGES.toString()).split(","));
+        paddingType = props.getProperty(FIXED_WIDTH_PADDING_TYPE.toString(), "none");
+        paddingChar = props.getProperty(FIXED_WIDTH_PADDING_CHAR.toString(), " ").charAt(0);
         numCols = ranges.size();
         row = new ArrayList<String>(numCols);
         outputFields = new String[numCols];
@@ -67,7 +75,8 @@ public class FixedWidthSerDe extends AbstractSerDe {
 
             // Convert the field to Java class String, because objects of String type
             // can be stored in String, Text, or some other classes.
-            outputFields[c] = fieldStringOI.getPrimitiveJavaObject(field);
+            int size = getFinalFieldSize(ranges.get(c));
+            outputFields[c] = padIfNecessary(fieldStringOI.getPrimitiveJavaObject(field), paddingType, paddingChar, size);
         }
 
         final StringWriter writer = new StringWriter();
@@ -76,6 +85,34 @@ public class FixedWidthSerDe extends AbstractSerDe {
         }
 
         return new Text(writer.toString());
+    }
+
+    private int getFinalFieldSize(String range) {
+        int start = Integer.parseInt(range.split("-")[0]) - 1;
+        int end = Integer.parseInt(range.split("-")[1]);
+        int size = end - start;
+        return size;
+    }
+
+    private String padIfNecessary(String obj, String paddingType, char paddingChar, int size) {
+        if (isEmptyOrNull(paddingType)) {
+            return obj;
+        }
+        if ("padleft".equals(paddingType)) {
+            return padLeft(obj, paddingChar, size);
+        }
+        throw new RuntimeException("Unable to pad using scheme: " + paddingType);
+    }
+
+    private boolean isEmptyOrNull(String obj) {
+        return null == obj || "".equals(obj);
+    }
+
+    private String padLeft(String obj, char paddingChar, int size) {
+        int add = size - obj.length();
+        char[] padding = new char[add];
+        Arrays.fill(padding, paddingChar);
+        return new String(padding).concat(obj);
     }
 
     @Override
